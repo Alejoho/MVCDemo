@@ -1,0 +1,71 @@
+@model OrderDisplayModel
+@{
+    ViewData["Title"] = "Display Order";
+}
+
+@if (Model.Order is null)
+{
+    <h1>The Order Was Not Found</h1>
+}
+else
+{
+    <h1>Order Details</h1>
+
+    <table class="table">
+    <caption class="visually-hidden">Order Details</caption>
+    <tbody>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Order.OrderedBy)</strong></th>
+            <td>@Model.Order.OrderedBy</td>
+        </tr>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Order.Date)</strong></th>
+            <td>
+                <time datetime="@Model.Order.Date.ToString("s")">@Model.Order.Date</time>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Food.Title)</strong></th>
+            <td>@Model.Food.Title</td>
+        </tr>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Food.Price)</strong></th>
+            <td>@Model.Food.Price.ToString("C")</td>
+        </tr>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Order.Quantity)</strong></th>
+            <td>@Model.Order.Quantity</td>
+        </tr>
+        <tr>
+            <th scope="row"><strong>@Html.DisplayNameFor(m => m.Order.Total)</strong></th>
+            <td>@Model.Order.Total.ToString("C")</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a asp-action="Delete" asp-route-id="@Model.Order.Id" class="btn btn-danger">
+                    Delete
+                    Order</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+    <form method="post" asp-action="Update">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input name="id" value="@Model.Order.Id" hidden>
+    <div>
+        <label asp-for="@Model.NewName" class="form-label">Ordered By</label>
+        <input asp-for="@Model.NewName" value="@Model.Order.OrderedBy" class="form-control">
+        <span asp-validation-for="NewName" class="text-danger val-msg"></span>
+    </div>
+    <div>
+        <input type="submit" value="Update Client" class="btn btn-primary">
+    </div>
+</form>
+}
+
+@section scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

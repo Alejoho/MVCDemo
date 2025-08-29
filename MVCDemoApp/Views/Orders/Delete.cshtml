@@ -1,0 +1,25 @@
+﻿@model DataLibrary.Models.OrderModel
+@{
+    ViewData["Title"] = "Delete Order";
+}
+
+@if (@Model is null)
+{
+    <h1>The Order Was Not Found</h1>
+}
+else
+{
+    <h1>Delete Order</h1>
+
+    <form method="post">
+        <p>
+            Are you sure you want to delete the order made by @Model.OrderedBy on
+            <time datetime="@Model.Date.ToString("s")">@Model.Date</time>
+            ?
+        </p>
+        <input asp-for="Id" value="@Model.Id" hidden>
+        <div>
+            <input type="submit" value="Delete Order" class="btn btn-danger">
+        </div>
+    </form>
+}

@@ -1,0 +1,38 @@
+@model OrderCreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create an Order</h1>
+
+<form method="post" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div>
+        <label asp-for="@Model.Order.FoodId" class="form-label"></label>
+        <select asp-for="@Model.Order.FoodId" asp-items="Model.Foods" class="form-control">
+            <option hidden disabled selected>Select a meal</option>
+        </select>
+        <span asp-validation-for="@Model.Order.FoodId" class="text-danger val-msg"></span>
+    </div>
+
+    <div>
+        <label asp-for="@Model.Order.Quantity" class="form-label"></label>
+        <input asp-for="@Model.Order.Quantity" class="form-control"/>
+        <span asp-validation-for="@Model.Order.Quantity" class="text-danger val-msg"></span>
+    </div>
+
+    <div>
+        <label asp-for="@Model.Order.OrderedBy" class="form-label"></label>
+        <input asp-for="@Model.Order.OrderedBy" class="form-control"/>
+        <span asp-validation-for="@Model.Order.OrderedBy" class="text-danger val-msg"></span>
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" value="Create Order" class="btn btn-primary mt-2"/>
+    </div>
+</form>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

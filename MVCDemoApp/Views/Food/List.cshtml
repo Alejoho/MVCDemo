@@ -1,0 +1,27 @@
+@model IEnumerable<DataLibrary.Models.FoodModel>
+@{
+    ViewData["Title"] = "Food List";
+}
+
+<h1>Food List</h1>
+
+<table class="table table-striped">
+    <caption class="visually-hidden">List of available food items with prices</caption>
+    <thead class="bg-dark text-white">
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Price)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var food in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => food.Title)</td>
+                <td>@food.Description</td>
+                <td>@String.Format("{0:C}", food.Price)</td>
+            </tr>
+        }
+    </tbody>
+</table>
