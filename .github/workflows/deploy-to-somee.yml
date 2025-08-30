@@ -6,9 +6,11 @@ on:
       - main
     types:
       - closed
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
+    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
     runs-on: windows-latest
 
     steps:
