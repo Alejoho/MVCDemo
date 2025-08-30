@@ -42,6 +42,10 @@ namespace MVCDemoApp.Controllers
                 return View();
             }
 
+            var foods = await _foodData.GetAllFood();
+
+            order.Total = foods.First(f => f.Id == order.FoodId).Price * order.Quantity;
+
             int id = await _orderData.CreateOrderAsync(order);
 
             return RedirectToAction("Display", new { id });
@@ -52,10 +56,13 @@ namespace MVCDemoApp.Controllers
             OrderDisplayModel model = new();
 
             model.Order = await _orderData.GetOrderByIdAsync(id);
-            var foods = await _foodData.GetAllFood();
 
-            model.Food = foods.First(f => f.Id == model.Order.FoodId);
-            model.Order.Total = model.Food.Price * model.Order.Quantity;
+            if (model.Order is not null)
+            {
+                var foods = await _foodData.GetAllFood();
+
+                model.Food = foods.First(f => f.Id == model.Order.FoodId);
+            }
 
             return View(model);
         }
@@ -89,7 +96,7 @@ namespace MVCDemoApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, string n)
+        public async Task<IActionResult> Delete(int id, bool n = false)
         {
             await _orderData.DeleteOrder(id);
 
@@ -101,11 +108,6 @@ namespace MVCDemoApp.Controllers
             OrderListModel model = new();
             model.Foods = await _foodData.GetAllFood();
             model.Orders = await _orderData.GetAllOrders();
-
-            model.Orders.ForEach(o =>
-            {
-                o.Total = o.Quantity * model.Foods.First(f => f.Id == o.FoodId).Price;
-            });
 
             return View("List", model);
         }
